@@ -21,6 +21,8 @@ wordcloud==1.8.1
 matplotlib==3.4.3
 
 !pip install https://s3-us-west-2.amazonaws.com/ai2-s2-scispacy/releases/v0.5.1/en_core_sci_sm-0.5.1.tar.gz
+
+optional 
 !pip install https://s3-us-west-2.amazonaws.com/ai2-s2-scispacy/releases/v0.5.1/en_core_sci_md-0.5.1.tar.gz
 !pip install https://s3-us-west-2.amazonaws.com/ai2-s2-scispacy/releases/v0.5.1/en_ner_bc5cdr_md-0.5.1.tar.gz
      
@@ -45,9 +47,19 @@ python script.py Bcl-x
 
 ## Output
 
-After running the script, the following files will be generated:
+## Output
 
-- `pubmed_articles_[search_term].xlsx`: Excel file containing retrieved PubMed articles.
-- `pubmed_errors_[search_term].xlsx`: Excel file containing PubMed IDs with errors (if any).
-- `abstract_entities_[search_term].csv`: CSV file containing extracted entities from abstracts.
-- `wordcloud_[search_term].png`: Word cloud image representing the extracted entities.
+- The script will generate the following output files:
+
+    - `pubmed_articles_<query>.xlsx`: Excel file containing retrieved PubMed articles and their metadata.
+    
+    - `pubmed_articles_<query>.csv`: CSV file containing the same information as the Excel file.
+    
+    - `pubmed_errors_<query>.xlsx`: Excel file containing PubMed IDs for articles that could not be retrieved.
+    
+    - `pubmed_errors_<query>.csv`: CSV file containing the same information as the Excel file for errors.
+    
+    - `abstract_entities_<query>.csv`: CSV file containing named entities extracted from the abstracts of retrieved articles.
+    
+    - `wordcloud_<query>.png`: PNG image file of the word cloud generated from the extracted entities.
+
