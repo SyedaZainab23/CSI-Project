@@ -36,7 +36,10 @@ def get_pubmed_articles(query, max_results=1000):
             title = article_xml.find(".//ArticleTitle").text
             abstract_element = article_xml.find(".//AbstractText")
             abstract = abstract_element.text if abstract_element is not None else "Abstract not available"
-            articles.append({'pubmedid': pmid, 'title': title, 'abstract': abstract})
+            # Extract publication year
+            pub_date_element = article_xml.find(".//PubDate")
+            pub_year = pub_date_element.find("Year").text if pub_date_element is not None and pub_date_element.find("Year") is not None else "Year not available"
+            articles.append({'pubmedid': pmid, 'title': title, 'abstract': abstract, 'pub_year': pub_year})
         else:
             errors.append(pmid)
             print(f"Error fetching article with PMID {pmid}")
@@ -61,11 +64,21 @@ def main():
     df.to_excel(excel_filename, index=False)
     print(f"Excel file '{excel_filename}' saved successfully.")
 
+    # Save DataFrame to CSV file
+    csv_filename = f"pubmed_articles_{args.query}.csv"
+    df.to_csv(csv_filename, index=False)
+    print(f"CSV file '{csv_filename}' saved successfully.")
+
     # Save errors to a separate Excel sheet
     errors_df = pd.DataFrame({"PubMed IDs with Errors": errors})
     errors_excel_filename = f"pubmed_errors_{args.query}.xlsx"
     errors_df.to_excel(errors_excel_filename, index=False)
     print(f"Excel file '{errors_excel_filename}' saved successfully.")
+
+    # Save errors to a CSV file
+    errors_csv_filename = f"pubmed_errors_{args.query}.csv"
+    errors_df.to_csv(errors_csv_filename, index=False)
+    print(f"CSV file '{errors_csv_filename}' saved successfully.")
 
     # Perform NER on all abstracts
     all_entities = []
